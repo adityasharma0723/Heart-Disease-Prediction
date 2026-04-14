@@ -97,8 +97,16 @@ def run_preprocessing_pipeline(filepath):
     print("\n--- Handling Missing Values ---")
     df = handle_missing_values(df)
 
+    print("\n--- Creating Composite Features ---")
+    from src.feature_engineering import create_composite_features
+    df = create_composite_features(df)
+
     print("\n--- Encoding Features ---")
     X, y, label_encoder = encode_features(df)
+
+    print("\n--- Removing Highly Correlated Features ---")
+    from src.feature_engineering import remove_highly_correlated
+    X, dropped_cols = remove_highly_correlated(X)
 
     print("\n--- Splitting Data ---")
     X_train, X_test, y_train, y_test = split_data(X, y)
